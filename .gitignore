@@ -17,6 +17,8 @@ coverage.html
 post.go
 todo.go
 api_types.go
+test.go
+types.go
 
 # Dependency directories
 vendor/

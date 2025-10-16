@@ -180,20 +180,26 @@ curl -s https://api.example.com/data | \
 
 ## Tips
 
-1. **Flags must come before positional arguments:**
-   ```bash
-   # ✓ Correct
-   ./json-to-go -type=User -output=user.go data.json
+1. **⚠️  Flags MUST come before positional arguments:**
    
-   # ✗ Wrong
+   This is a Go flag package limitation. The tool will now detect this and show a helpful error.
+   
+   ```bash
+   # ✓ Correct - flags FIRST, then file/URL
+   ./json-to-go -type=User -output=user.go data.json
+   ./json-to-go -type=Post -output=post.go https://api.example.com/posts/1
+   
+   # ✗ Wrong - flags after positional argument won't be parsed
    ./json-to-go data.json -type=User -output=user.go
    ```
+   
+   **Why?** Go's standard `flag` package stops parsing at the first non-flag argument.
 
 2. **URL auto-detection works for positional arguments:**
    ```bash
    # Both work the same
-   ./json-to-go https://api.example.com/data
-   ./json-to-go -url=https://api.example.com/data
+   ./json-to-go -type=User https://api.example.com/data
+   ./json-to-go -url=https://api.example.com/data -type=User
    ```
 
 3. **Use descriptive type names:**

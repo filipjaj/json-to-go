@@ -41,17 +41,25 @@ go install github.com/filipjaj/json-to-go/cmd/json-to-go@latest
 
 ## CLI Usage
 
+> ⚠️ **IMPORTANT:** All flags must come **BEFORE** the file or URL argument!
+>
+> ✅ Correct: `./json-to-go -type=User -output=file.go data.json`  
+> ❌ Wrong: `./json-to-go data.json -type=User -output=file.go`
+
 ### From stdin
+
 ```bash
 echo '{"name":"John","age":30}' | ./json-to-go -type=Person
 ```
 
 ### From file
+
 ```bash
 ./json-to-go -type=APIResponse example.json
 ```
 
 ### From URL
+
 ```bash
 # URL as positional argument
 ./json-to-go -type=User https://api.example.com/users/1
@@ -64,6 +72,7 @@ echo '{"name":"John","age":30}' | ./json-to-go -type=Person
 ```
 
 ### Write to file
+
 ```bash
 # From file to file
 ./json-to-go -type=User -output=user_types.go example.json
@@ -76,6 +85,7 @@ echo '{"name":"John"}' | ./json-to-go -type=Person -output=person.go
 ```
 
 ### With options
+
 ```bash
 # Add omitempty to all fields
 echo '{"name":"John"}' | ./json-to-go -type=Person -omitempty
@@ -103,6 +113,7 @@ echo '{"name":"John"}' | ./json-to-go -type=Person -omitempty
 ## Features
 
 ### Core Functionality
+
 - ✅ Converts JSON to Go struct definitions
 - ✅ Handles nested objects and arrays
 - ✅ Detects proper Go types (int, int64, float64, bool, string, time.Time)
@@ -114,16 +125,19 @@ echo '{"name":"John"}' | ./json-to-go -type=Person -omitempty
 - ✅ Flatten mode for top-level struct definitions
 
 ### Input Sources
+
 - ✅ **Stdin** - Pipe JSON directly from command line
 - ✅ **Local files** - Read from JSON files
 - ✅ **URLs** - Fetch JSON directly from HTTP/HTTPS endpoints
 - ✅ **Auto-detection** - Automatically detects if input is URL or file
 
 ### Output Options
+
 - ✅ **Stdout** - Print to console (default)
 - ✅ **File** - Write to specified Go file with `-output` flag
 
 ### Quality
+
 - ✅ 78.6% test coverage with comprehensive tests
 - ✅ Race condition tested
 - ✅ Full CLI with help documentation
@@ -145,14 +159,14 @@ func main() {
         "email": "john@example.com",
         "created_at": "2023-10-15T12:30:45Z"
     }`
-    
+
     result := jsontogo.JSONToGo(json, "User", true, false, false)
-    
+
     if result.Error != "" {
         fmt.Println("Error:", result.Error)
         return
     }
-    
+
     fmt.Println(result.Go)
 }
 ```
@@ -177,6 +191,7 @@ func JSONToGo(jsonInput string, typename string, flatten, example, allOmitempty 
 ```
 
 **Parameters:**
+
 - `jsonInput`: JSON string to convert
 - `typename`: Name for the root type
 - `flatten`: Whether to flatten nested types to top-level declarations
@@ -184,6 +199,7 @@ func JSONToGo(jsonInput string, typename string, flatten, example, allOmitempty 
 - `allOmitempty`: Add omitempty to all fields
 
 **Returns:**
+
 - `Result` struct with `Go` (string) and `Error` (string) fields
 
 ## Type Detection
@@ -201,17 +217,21 @@ The converter automatically detects:
 ## Special Features
 
 ### Common Initialisms
+
 Follows Go conventions for common initialisms:
+
 - `user_id` → `UserID`
 - `api_key` → `APIKey`
 - `http_url` → `HTTPURL`
 
 ### Field Name Sanitization
+
 - Removes special characters
 - Handles numeric field names (e.g., `"123"` → `Num123`)
 - Converts `SCREAMING_CASE` to `PascalCase`
 
 ### Optional Fields
+
 When parsing arrays of objects, fields that don't appear in all objects get the `omitempty` tag automatically.
 
 ## Development
@@ -254,6 +274,7 @@ go test -race
 ## Test Coverage
 
 The package includes comprehensive tests covering:
+
 - Simple and nested objects
 - Arrays and arrays of objects
 - Mixed types and null values
@@ -270,3 +291,4 @@ The package includes comprehensive tests covering:
 Original JavaScript implementation by [Matt Holt](https://github.com/mholt/json-to-go)
 
 Go implementation with comprehensive testing and continuous verification.
+[![Go Reference](https://pkg.go.dev/badge/github.com/filipjaj/json-to-go@v0.0.0-20251016123751-aaf18061db9c.svg)](https://pkg.go.dev/github.com/filipjaj/json-to-go@v0.0.0-20251016123751-aaf18061db9c)
